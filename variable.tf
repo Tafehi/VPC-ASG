@@ -4,7 +4,7 @@ variable "AWS_REGION" {}
 
 variable "environment" {
   description = "Environment name"
-  default     = "EyeEM"
+  default     = "EM"
 }
 
 variable "Desired_capacity" {

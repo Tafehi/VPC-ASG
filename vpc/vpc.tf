@@ -4,7 +4,7 @@ data "aws_availability_zones" "available" {
 }
 
 # Create a VPC for the region associated with the AZ
-resource "aws_vpc" "VPC-EyeEM" {
+resource "aws_vpc" "VPC-EM" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = "true"
   enable_dns_support   = "true"
@@ -17,31 +17,31 @@ resource "aws_vpc" "VPC-EyeEM" {
 # Creaet three public Subnets
 resource "aws_subnet" "public_subnet" {
   count                   = length(data.aws_availability_zones.available.names)
-  vpc_id                  = aws_vpc.VPC-EyeEM.id
+  vpc_id                  = aws_vpc.VPC-EM.id
   cidr_block              = "10.0.${10 + count.index}.0/24"
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "PublicSubnet-${count.index}-EyeEM"
+    Name = "PublicSubnet-${count.index}-"
   }
 }
 
 # Creaet three private Subnets
 resource "aws_subnet" "private_subnet" {
   count                   = length(data.aws_availability_zones.available.names)
-  vpc_id                  = aws_vpc.VPC-EyeEM.id
+  vpc_id                  = aws_vpc.VPC-EM.id
   cidr_block              = "10.0.${20 + count.index}.0/24"
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = false # to have a private IP add
   tags = {
-    Name = "PrivateSubnet-${count.index}-EyeEM"
+    Name = "PrivateSubnet-${count.index}-"
   }
 }
 
 # internet gateway
 resource "aws_internet_gateway" "main-igw" {
-  vpc_id = aws_vpc.VPC-EyeEM.id
+  vpc_id = aws_vpc.VPC-EM.id
 
   tags = {
     "Name" = var.environment
@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "main-igw" {
 
 # Route table
 resource "aws_route_table" "mainRoute" {
-  vpc_id = aws_vpc.VPC-EyeEM.id
+  vpc_id = aws_vpc.VPC-EM.id
   route = [{
     carrier_gateway_id         = ""
     cidr_block                 = "0.0.0.0/0"
@@ -81,7 +81,7 @@ resource "aws_route_table_association" "main-Route-Associat" {
 
 #Security Group for levelupvpc
 resource "aws_security_group" "allow-HTTPS-sg" {
-  vpc_id      = aws_vpc.VPC-EyeEM.id
+  vpc_id      = aws_vpc.VPC-EM.id
   name        = "allow-HTTPS-sg"
   description = "security group that allows HTTPS"
 
