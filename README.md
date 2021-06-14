@@ -17,4 +17,4 @@
 - UserData is used to install and rund Docker with nginx image in `./asg` line 34.
 
 ## Note:
-- for security concerns and secure practice is to avoid copying the public and private keys into the repo. Use different methods such as Ansible or vault instead.
+- for security concerns it is better to avoid copying the public and private keys into the repo. Use different methods such as Ansible or vault instead.
