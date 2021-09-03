@@ -18,3 +18,5 @@
 
 ## Note:
 - for security concerns it is better to avoid copying the public and private keys into the repo. Use different methods such as Ansible or vault instead.
+
+# This part is added as a test
